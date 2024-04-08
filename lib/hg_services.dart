@@ -7,22 +7,51 @@ class City {
   final String currently;
   final String time;
   final String cityName;
+  final List<Forecast> forecast;
 
   const City({
       required this.temp,
       required this.description,
       required this.currently,
       required this.time,
-      required this.cityName});
+      required this.cityName,
+      required this.forecast});
 
   factory City.fromJson(Map<String, dynamic> json) {
+    var forecastJson = json['forecast'] as List;
+    List<Forecast> forecastList =
+    forecastJson.map((forecast) => Forecast.fromJson(forecast)).toList();
+
     return City(
         temp: json['temp'],
         description: json['description'],
         currently: json['currently'],
         time: json['time'],
-        cityName: json['city_name']
+        cityName: json['city_name'],
+        forecast: forecastList,
     );
+  }
+}
+
+class Forecast {
+  final String date;
+  final String weekday;
+  final int max;
+  final int min;
+
+  const Forecast({
+    required this.date,
+    required this.weekday,
+    required this.max,
+    required this.min
+  });
+
+  factory Forecast.fromJson(Map<String, dynamic> json){
+    return Forecast(
+        date: json['date'],
+        weekday: json['weekday'],
+        max: json['max'],
+        min: json['min']);
   }
 }
 
